@@ -9,8 +9,14 @@ import styles from "./home.style";
 import Carousel from "../Components/Home/Carousel";
 import Headings from "../Components/Home/Heading";
 import ProductRow from "../Components/Products/ProductRow";
+import LoadingIndicator from "../Components/Loading/LoadingIndicator";
 
 const Home = () => {
+  const isLoading = false;
+
+  if (isLoading) {
+    return <LoadingIndicator />;
+  }
   return (
     <SafeAreaView>
       <View style={styles.appBarWrapper}>

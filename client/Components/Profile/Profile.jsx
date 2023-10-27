@@ -9,7 +9,7 @@ import {
 } from "@expo/vector-icons";
 
 import styles from "./profile.style";
-import { COLORS, SIZES } from "../constants";
+import { COLORS, SIZES } from "../../constants";
 
 const Profile = () => {
   const navigation = useNavigation();
