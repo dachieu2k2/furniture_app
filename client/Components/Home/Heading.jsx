@@ -6,11 +6,11 @@ import { useNavigation } from "@react-navigation/native";
 import styles from "./heading.style";
 import { COLORS, SIZES } from "../../constants";
 
-const Headings = () => {
+const Headings = ({ title = "New Rivals" }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}> New Rivals</Text>
+        <Text style={styles.headerTitle}> {title}</Text>
         <TouchableOpacity>
           <Ionicons name="ios-grid" size={24} color={COLORS.primary} />
         </TouchableOpacity>

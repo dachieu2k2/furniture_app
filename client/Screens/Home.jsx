@@ -10,6 +10,7 @@ import Carousel from "../Components/Home/Carousel";
 import Headings from "../Components/Home/Heading";
 import ProductRow from "../Components/Products/ProductRow";
 import LoadingIndicator from "../Components/Loading/LoadingIndicator";
+import { SIZES } from "../constants";
 
 const Home = () => {
   const isLoading = false;
@@ -34,11 +35,19 @@ const Home = () => {
           </View>
         </View>
       </View>
-      <ScrollView>
+      <ScrollView
+        style={{
+          paddingBottom: SIZES.large,
+        }}
+      >
         <Welcome />
         <Carousel />
         <Headings />
         <ProductRow />
+        <Headings title="New Collections" />
+        <ProductRow />
+        <Headings />
+        <ProductRow title="Popular" />
       </ScrollView>
     </SafeAreaView>
   );

@@ -4,12 +4,34 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StyleSheet, AppState } from "react-native";
 import { useFonts } from "expo-font";
 import * as SlapshScreen from "expo-splash-screen";
-import BottomTabNavigation from "./Navigation/BottomTabNavigation";
-import { QueryClientProvider, onlineManager } from "@tanstack/react-query";
+import {
+  QueryClientProvider,
+  onlineManager,
+  QueryClient,
+  focusManager,
+} from "@tanstack/react-query";
 import NetInfo from "@react-native-community/netinfo";
 
+import BottomTabNavigation from "./Navigation/BottomTabNavigation";
+
 import { Cart, ProductDetail } from "./Screens";
-import { queryClient } from "./Queries";
+// import { queryClient } from "./Queries";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      retry: 1,
+      staleTime: 5 * 1000,
+    },
+    mutations: {
+      onError(error, variables, context) {},
+      retry: 1,
+    },
+  },
+});
 
 const Stack = createNativeStackNavigator();
 
