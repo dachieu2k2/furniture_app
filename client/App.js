@@ -14,7 +14,16 @@ import NetInfo from "@react-native-community/netinfo";
 
 import BottomTabNavigation from "./Navigation/BottomTabNavigation";
 
-import { Cart, ProductDetail } from "./Screens";
+import {
+  Cart,
+  LoginScreen,
+  NewRivals,
+  ProductDetail,
+  Signup,
+  WelcomeScreen,
+  Settings,
+  EditProfile,
+} from "./Screens";
 // import { queryClient } from "./Queries";
 
 const queryClient = new QueryClient({
@@ -111,6 +120,48 @@ export default function App() {
           <Stack.Screen
             name="ProductDetails"
             component={ProductDetail}
+            options={{
+              headerShown: false,
+            }}
+          ></Stack.Screen>
+          <Stack.Screen
+            name="ProductList"
+            component={NewRivals}
+            options={{
+              headerShown: false,
+            }}
+          ></Stack.Screen>
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+            options={{
+              headerShown: false,
+            }}
+          ></Stack.Screen>
+          <Stack.Screen
+            name="Signup"
+            component={Signup}
+            options={{
+              headerShown: false,
+            }}
+          ></Stack.Screen>
+          <Stack.Screen
+            name="Welcome"
+            component={WelcomeScreen}
+            options={{
+              headerShown: false,
+            }}
+          ></Stack.Screen>
+          <Stack.Screen
+            name="Setting"
+            component={Settings}
+            options={{
+              headerShown: false,
+            }}
+          ></Stack.Screen>
+          <Stack.Screen
+            name="EditProfile"
+            component={EditProfile}
             options={{
               headerShown: false,
             }}

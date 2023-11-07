@@ -1,106 +1,291 @@
-import { View, Text, TouchableOpacity, Image } from "react-native";
-import React, { useState } from "react";
-import { useNavigation } from "@react-navigation/native";
 import {
-  SimpleLineIcons,
-  Ionicons,
-  MaterialCommunityIcons,
-  Fontisto,
-} from "@expo/vector-icons";
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  useWindowDimensions,
+  FlatList,
+} from "react-native";
+import React, { useState } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { COLORS, FONTS, SIZES, images } from "../constants";
+import { StatusBar } from "expo-status-bar";
+import { MaterialIcons } from "@expo/vector-icons";
+import { SceneMap, TabBar, TabView } from "react-native-tab-view";
+import { photos } from "../constants/data";
 
-import styles from "./profile.style";
-import { COLORS, SIZES } from "../constants";
-
-const Profile = () => {
-  const navigation = useNavigation();
-  const [starCount, setStarCount] = useState(4);
-
-  const increment = () => {
-    setStarCount((starCount) => starCount + 1);
-  };
-  const decrement = () => {
-    setStarCount((starCount) => starCount - 1);
-  };
-
-  return (
-    <View style={styles.container}>
-      <View style={styles.upperRow}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="chevron-back-circle" size={30} />
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => {}}>
-          <Ionicons name="heart" size={30} color={COLORS.primary} />
-        </TouchableOpacity>
-      </View>
-
-      <Image
-        source={{
-          uri: "https://www.bria.com.ph/wp-content/uploads/2022/07/Wooden-Furniture-Pieces.png",
-        }}
-        style={styles.image}
-      />
-
-      <View style={styles.details}>
-        <View style={styles.titleRow}>
-          <Text style={styles.title}>Product</Text>
-          <View style={styles.priceWrapper}>
-            <Text style={styles.price}>$660.88</Text>
-          </View>
+const PhotosRoutes = () => (
+  <View style={{ flex: 1 }}>
+    <FlatList
+      data={photos}
+      numColumns={3}
+      renderItem={({ item, index }) => (
+        <View
+          style={{
+            flex: 1,
+            aspectRatio: 1,
+            margin: 3,
+          }}
+        >
+          <Image
+            key={index}
+            source={item}
+            style={{ width: "100%", height: "100%", borderRadius: 12 }}
+          />
         </View>
-        <View style={styles.ratingRow}>
-          <View style={styles.rating}>
-            {[1, 2, 3, 4, 5].map((index) => (
-              <Ionicons name="star" key={index} size={24} color={"gold"} />
-            ))}
-            <Text style={styles.ratingText}>(4.9)</Text>
-          </View>
+      )}
+    />
+  </View>
+);
 
-          <View style={styles.rating}>
-            <TouchableOpacity onPress={() => decrement()}>
-              <SimpleLineIcons name="minus" size={20} />
-            </TouchableOpacity>
-            <Text style={styles.ratingText}>{starCount}</Text>
-            <TouchableOpacity onPress={() => increment()}>
-              <SimpleLineIcons name="plus" size={20} />
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-      <View style={styles.descriptionWrapper}>
-        <Text style={styles.description}>Description</Text>
-        <Text style={styles.descText}>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magni odio
-          quae perspiciatis voluptatibus deleniti quo minima id cumque aliquam.
-          Ipsum voluptatibus sequi quae ullam quaerat non similique nostrum.
-          Hic, vero.
+const LikesRoutes = () => (
+  <View
+    style={{
+      flex: 1,
+      backgroundColor: "blue",
+    }}
+  />
+);
+
+const renderScene = SceneMap({
+  first: PhotosRoutes,
+  second: LikesRoutes,
+});
+
+const Profile = ({ navigation }) => {
+  const layout = useWindowDimensions();
+  const [index, setIndex] = useState(0);
+
+  const [routes] = useState([
+    { key: "first", title: "Photos" },
+    { key: "second", title: "Likes" },
+  ]);
+
+  const renderTabBar = (props) => (
+    <TabBar
+      {...props}
+      indicatorStyle={{
+        backgroundColor: COLORS.primary,
+      }}
+      style={{
+        backgroundColor: COLORS.white,
+        height: 44,
+      }}
+      renderLabel={({ focused, route }) => (
+        <Text style={[{ color: focused ? COLORS.black : COLORS.gray }]}>
+          {route.title}
         </Text>
+      )}
+    />
+  );
+  return (
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: COLORS.white,
+      }}
+    >
+      <StatusBar backgroundColor={COLORS.gray} />
+      <View style={{ width: "100%" }}>
+        <Image
+          source={images.cover}
+          resizeMode="cover"
+          style={{
+            height: 228,
+            width: "100%",
+          }}
+        />
       </View>
-      <View style={{ marginBottom: SIZES.small }}>
-        <View style={styles.location}>
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 3 }}>
-            <Ionicons name="location-outline" size={20} />
-            <Text>Ha Noi</Text>
+
+      <View style={{ flex: 1, alignItems: "center" }}>
+        <Image
+          source={images.profile}
+          resizeMode="contain"
+          style={{
+            height: 155,
+            width: 155,
+            borderRadius: 999,
+            borderColor: COLORS.primary,
+            borderWidth: 2,
+            marginTop: -90,
+          }}
+        />
+
+        <Text
+          style={{
+            ...FONTS.h3,
+            color: COLORS.primary,
+            marginVertical: 8,
+          }}
+        >
+          Melissa Peters
+        </Text>
+        <Text
+          style={{
+            color: COLORS.black,
+            ...FONTS.body4,
+          }}
+        >
+          Interior designer
+        </Text>
+
+        <View
+          style={{
+            flexDirection: "row",
+            marginVertical: 6,
+            alignItems: "center",
+          }}
+        >
+          <MaterialIcons name="location-on" size={24} color="black" />
+          <Text
+            style={{
+              ...FONTS.body4,
+              marginLeft: 4,
+            }}
+          >
+            Lagos, Nigeria
+          </Text>
+        </View>
+
+        <View
+          style={{
+            paddingVertical: 8,
+            flexDirection: "row",
+          }}
+        >
+          <View
+            style={{
+              flexDirection: "column",
+              alignItems: "center",
+              marginHorizontal: SIZES.padding,
+            }}
+          >
+            <Text
+              style={{
+                ...FONTS.h2,
+                color: COLORS.primary,
+              }}
+            >
+              122
+            </Text>
+            <Text
+              style={{
+                ...FONTS.body4,
+                color: COLORS.primary,
+              }}
+            >
+              Followers
+            </Text>
           </View>
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 3 }}>
-            <MaterialCommunityIcons name="truck-delivery-outline" size={20} />
-            <Text>Free Delivery</Text>
+
+          <View
+            style={{
+              flexDirection: "column",
+              alignItems: "center",
+              marginHorizontal: SIZES.padding,
+            }}
+          >
+            <Text
+              style={{
+                ...FONTS.h2,
+                color: COLORS.primary,
+              }}
+            >
+              67
+            </Text>
+            <Text
+              style={{
+                ...FONTS.body4,
+                color: COLORS.primary,
+              }}
+            >
+              Followings
+            </Text>
+          </View>
+
+          <View
+            style={{
+              flexDirection: "column",
+              alignItems: "center",
+              marginHorizontal: SIZES.padding,
+            }}
+          >
+            <Text
+              style={{
+                ...FONTS.h2,
+                color: COLORS.primary,
+              }}
+            >
+              77K
+            </Text>
+            <Text
+              style={{
+                ...FONTS.body4,
+                color: COLORS.primary,
+              }}
+            >
+              Likes
+            </Text>
           </View>
         </View>
 
-        {/* Cart */}
-        <View style={styles.cartRow}>
-          <TouchableOpacity onPress={() => {}} style={styles.cartBtn}>
-            <Text style={styles.cartTitle}>Let's Buy It Now!</Text>
+        <View style={{ flexDirection: "row" }}>
+          <TouchableOpacity
+            style={{
+              width: 124,
+              height: 36,
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: COLORS.primary,
+              borderRadius: 10,
+              marginHorizontal: SIZES.padding * 2,
+            }}
+            onPress={() => navigation.navigate("EditProfile")}
+          >
+            <Text
+              style={{
+                ...FONTS.body4,
+                color: COLORS.white,
+              }}
+            >
+              Edit Profile
+            </Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => {}} style={styles.addCart}>
-            <Fontisto name="shopping-bag" size={22} color={COLORS.lightWhite} />
+
+          <TouchableOpacity
+            style={{
+              width: 124,
+              height: 36,
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: COLORS.primary,
+              borderRadius: 10,
+              marginHorizontal: SIZES.padding * 2,
+            }}
+          >
+            <Text
+              style={{
+                ...FONTS.body4,
+                color: COLORS.white,
+              }}
+            >
+              Add Friend
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
 
-      {/* <Text>Product Details</Text> */}
-    </View>
+      <View style={{ flex: 1, marginHorizontal: 22, marginTop: 20 }}>
+        <TabView
+          navigationState={{ index, routes }}
+          renderScene={renderScene}
+          onIndexChange={setIndex}
+          initialLayout={{ width: layout.width }}
+          renderTabBar={renderTabBar}
+        />
+      </View>
+    </SafeAreaView>
   );
 };
+
 export default Profile;

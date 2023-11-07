@@ -14,7 +14,7 @@ import { COLORS, SIZES } from "../constants";
 const ProductDetail = () => {
   const route = useRoute();
   const { item } = route.params;
-  console.log(item);
+  // console.log(item);
   const navigation = useNavigation();
   const [starCount, setStarCount] = useState(4);
 

@@ -7,11 +7,12 @@ import styles from "./heading.style";
 import { COLORS, SIZES } from "../../constants";
 
 const Headings = ({ title = "New Rivals" }) => {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}> {title}</Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("ProductList")}>
           <Ionicons name="ios-grid" size={24} color={COLORS.primary} />
         </TouchableOpacity>
       </View>

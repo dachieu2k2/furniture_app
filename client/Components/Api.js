@@ -1,7 +1,22 @@
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
+import { useState, useEffect } from "react";
 
-const BASE_URL = `http://localhost:4000/api`;
+export function useDebounce(value, delay) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedValue(value), delay || 500);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
+}
+
+const BASE_URL = `http://192.168.0.105:4000/api`;
 
 // Products
 const PRODUCT_KEY = {
@@ -12,11 +27,9 @@ const PRODUCT_KEY = {
 };
 
 const fetchProducts = async () => {
-  console.log("run here?");
-
   try {
-    const response = await axios.get(`http://192.168.0.105:4000/api/products`);
-    console.log("data" + response.data);
+    const response = await axios.get(`${BASE_URL}/products`);
+    // console.log("data" + response.data);
     // console.log("data", response);
     return response.data;
   } catch (error) {
@@ -32,24 +45,29 @@ export function useProducts() {
   });
 }
 
-// ETC
+//searchProducts
 
-export async function fetchProduct() {
-  console.log("fetchProducts");
+const fetchProductsSearch = async (searchKey) => {
+  console.log(searchKey);
 
-  return movies.slice(0, 100);
-  // .map((movie) => ({ title: movie.title, year: movie.year }));
-}
-
-export async function fetchMovie(id) {
-  console.log("fetchProduct", id);
-
-  await delay(200 + Math.floor(Math.random() * 2000));
-
-  const result = movies.filter((item) => item._id === id);
-
-  if (result.length == 0) {
-    throw new Error("Movie not found");
+  try {
+    const response = await axios.get(
+      `${BASE_URL}/products/search/${searchKey || ""}`
+    );
+    console.log(searchKey);
+    // console.log("data" + response.data);
+    // console.log("data", response);
+    return response.data || [];
+  } catch (error) {
+    console.log(error);
+    return [];
   }
-  return result[0];
+};
+
+export function useProductsSearch(searchKey) {
+  return useQuery({
+    queryKey: [PRODUCT_KEY.PRODUCT_LIST, searchKey],
+    queryFn: () => fetchProductsSearch(searchKey),
+    initialData: [],
+  });
 }

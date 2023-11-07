@@ -3,5 +3,23 @@ import Search from "./Search";
 import Profile from "./Profile";
 import Cart from "./Cart";
 import ProductDetail from "./ProductDetail";
+import NewRivals from "./NewRivals";
+import LoginScreen from "./Login";
+import Signup from "./SignUp";
+import WelcomeScreen from "./WelcomScreen";
+import Settings from "./Setting";
+import EditProfile from "./EditProfile";
 
-export { Home, Search, Profile, Cart, ProductDetail };
+export {
+  Home,
+  Search,
+  Profile,
+  Cart,
+  ProductDetail,
+  NewRivals,
+  LoginScreen,
+  Signup,
+  WelcomeScreen,
+  Settings,
+  EditProfile,
+};

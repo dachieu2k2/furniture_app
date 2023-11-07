@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 
 import { COLORS } from "../constants/index";
-import { Home, Search, Profile } from "../Screens";
+import { Home, Search, Profile, Settings } from "../Screens";
 
 const Tab = createBottomTabNavigator();
 
@@ -64,6 +64,21 @@ const BottomTabNavigation = () => {
             return (
               <Ionicons
                 name={focused ? "person" : "person-outline"}
+                size={24}
+                color={focused ? COLORS.primary : COLORS.gray2}
+              />
+            );
+          },
+        }}
+      />
+      <Tab.Screen
+        name="Setting"
+        component={Settings}
+        options={{
+          tabBarIcon: ({ focused }) => {
+            return (
+              <Ionicons
+                name={focused ? "settings" : "settings-outline"}
                 size={24}
                 color={focused ? COLORS.primary : COLORS.gray2}
               />

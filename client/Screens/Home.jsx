@@ -46,8 +46,9 @@ const Home = () => {
         <ProductRow />
         <Headings title="New Collections" />
         <ProductRow />
-        <Headings />
-        <ProductRow title="Popular" />
+        <Headings title="Popular" />
+        <ProductRow />
+        <Headings title="" />
       </ScrollView>
     </SafeAreaView>
   );
