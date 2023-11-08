@@ -18,7 +18,9 @@ const SearchTitle = ({ item }) => {
             <Image source={{ uri: item.imageUrl }} style={styles.productImg} />
           </View>
           <View style={styles.textContainer}>
-            <Text style={styles.productTitle}>{item.title}</Text>
+            <Text style={styles.productTitle}>
+              <Text numberOfLines={1}>{item.title}</Text>
+            </Text>
             <Text style={styles.supplier}>{item.supplier}</Text>
             <Text style={styles.price}>{item.price}</Text>
           </View>

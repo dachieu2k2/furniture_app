@@ -9,6 +9,8 @@ import Signup from "./SignUp";
 import WelcomeScreen from "./WelcomScreen";
 import Settings from "./Setting";
 import EditProfile from "./EditProfile";
+import Checkout from "./Checkout";
+import Order from "./Order";
 
 export {
   Home,
@@ -22,4 +24,6 @@ export {
   WelcomeScreen,
   Settings,
   EditProfile,
+  Checkout,
+  Order,
 };

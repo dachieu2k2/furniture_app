@@ -15,7 +15,7 @@ const WelcomeScreen = ({ navigation }) => {
       <View style={{ flex: 1 }}>
         <View>
           <Image
-            source={require("../assets/hero1.jpg")}
+            source={require("../assets/images/fn1.jpg")}
             style={{
               height: 100,
               width: 100,
@@ -31,7 +31,7 @@ const WelcomeScreen = ({ navigation }) => {
           />
 
           <Image
-            source={require("../assets/hero3.jpg")}
+            source={require("../assets/images/fn2.jpg")}
             style={{
               height: 100,
               width: 100,
@@ -48,7 +48,7 @@ const WelcomeScreen = ({ navigation }) => {
           />
 
           <Image
-            source={require("../assets/hero3.jpg")}
+            source={require("../assets/images/fn3.jpg")}
             style={{
               width: 100,
               height: 100,
@@ -65,7 +65,7 @@ const WelcomeScreen = ({ navigation }) => {
           />
 
           <Image
-            source={require("../assets/hero2.jpg")}
+            source={require("../assets/images/fn4.jpg")}
             style={{
               height: 200,
               width: 200,
@@ -119,7 +119,7 @@ const WelcomeScreen = ({ navigation }) => {
                 marginVertical: 4,
               }}
             >
-              Connect with each other with chatting
+              Buy Furniture Online and Get up to 70% Off
             </Text>
             <Text
               style={{
@@ -127,7 +127,7 @@ const WelcomeScreen = ({ navigation }) => {
                 color: COLORS.white,
               }}
             >
-              Calling, Enjoy Safe and private texting
+              Diwali Sale - Urban Ladder
             </Text>
           </View>
 

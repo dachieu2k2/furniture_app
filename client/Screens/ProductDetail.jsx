@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, Image } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   SimpleLineIcons,
@@ -10,19 +10,23 @@ import {
 
 import styles from "./productDetail.style";
 import { COLORS, SIZES } from "../constants";
+import { CartContext } from "../Components/Contexts/CartContext";
 
 const ProductDetail = () => {
   const route = useRoute();
   const { item } = route.params;
   // console.log(item);
+
+  const { saveData } = useContext(CartContext);
+
   const navigation = useNavigation();
-  const [starCount, setStarCount] = useState(4);
+  const [starCount, setStarCount] = useState(1);
 
   const increment = () => {
     setStarCount((starCount) => starCount + 1);
   };
   const decrement = () => {
-    setStarCount((starCount) => starCount - 1);
+    setStarCount((starCount) => (starCount <= 1 ? 1 : starCount - 1));
   };
 
   return (
@@ -93,10 +97,23 @@ const ProductDetail = () => {
 
         {/* Cart */}
         <View style={styles.cartRow}>
-          <TouchableOpacity onPress={() => {}} style={styles.cartBtn}>
+          <TouchableOpacity
+            onPress={async () => {
+              await saveData(item, starCount);
+              setStarCount(1);
+              navigation.navigate("Cart");
+            }}
+            style={styles.cartBtn}
+          >
             <Text style={styles.cartTitle}>Let's Buy It Now!</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => {}} style={styles.addCart}>
+          <TouchableOpacity
+            onPress={async () => {
+              await saveData(item, starCount);
+              setStarCount(1);
+            }}
+            style={styles.addCart}
+          >
             <Fontisto name="shopping-bag" size={22} color={COLORS.lightWhite} />
           </TouchableOpacity>
         </View>

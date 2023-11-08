@@ -1,13 +1,15 @@
 import { View, Text, TouchableOpacity, Image } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
 import styles from "./productCardView.style";
-import { COLORS, SIZES } from "../../constants";
+import { COLORS } from "../../constants";
+import { CartContext } from "../Contexts/CartContext";
 
 const ProductCardView = ({ item }) => {
   const navigation = useNavigation();
+  const { saveData } = useContext(CartContext);
 
   // console.log(item);
 
@@ -40,7 +42,10 @@ const ProductCardView = ({ item }) => {
             {item.price}
           </Text>
         </View>
-        <TouchableOpacity style={styles.addBtn}>
+        <TouchableOpacity
+          style={styles.addBtn}
+          onPress={async () => await saveData(item, 1)}
+        >
           <Ionicons name="add-circle" size={35} color={COLORS.primary} />
         </TouchableOpacity>
       </View>

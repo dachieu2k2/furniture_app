@@ -23,7 +23,11 @@ import {
   WelcomeScreen,
   Settings,
   EditProfile,
+  Checkout,
+  Order,
 } from "./Screens";
+import CartProvider from "./Components/Contexts/CartContext";
+import AuthProvider from "./Components/Contexts/AuthContext";
 // import { queryClient } from "./Queries";
 
 const queryClient = new QueryClient({
@@ -100,74 +104,95 @@ export default function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen
-            name="Bottom Navigation"
-            component={BottomTabNavigation}
-            options={{
-              headerShown: false,
-            }}
-          ></Stack.Screen>
-          <Stack.Screen
-            name="Cart"
-            component={Cart}
-            options={{
-              headerShown: false,
-            }}
-          ></Stack.Screen>
+      <AuthProvider>
+        <CartProvider>
+          <NavigationContainer>
+            <Stack.Navigator>
+              <Stack.Screen
+                name="Bottom Navigation"
+                component={BottomTabNavigation}
+                options={{
+                  headerShown: false,
+                }}
+              ></Stack.Screen>
+              <Stack.Screen
+                name="Cart"
+                component={Cart}
+                options={{
+                  headerShown: false,
+                }}
+              ></Stack.Screen>
 
-          <Stack.Screen
-            name="ProductDetails"
-            component={ProductDetail}
-            options={{
-              headerShown: false,
-            }}
-          ></Stack.Screen>
-          <Stack.Screen
-            name="ProductList"
-            component={NewRivals}
-            options={{
-              headerShown: false,
-            }}
-          ></Stack.Screen>
-          <Stack.Screen
-            name="Login"
-            component={LoginScreen}
-            options={{
-              headerShown: false,
-            }}
-          ></Stack.Screen>
-          <Stack.Screen
-            name="Signup"
-            component={Signup}
-            options={{
-              headerShown: false,
-            }}
-          ></Stack.Screen>
-          <Stack.Screen
-            name="Welcome"
-            component={WelcomeScreen}
-            options={{
-              headerShown: false,
-            }}
-          ></Stack.Screen>
-          <Stack.Screen
-            name="Setting"
-            component={Settings}
-            options={{
-              headerShown: false,
-            }}
-          ></Stack.Screen>
-          <Stack.Screen
-            name="EditProfile"
-            component={EditProfile}
-            options={{
-              headerShown: false,
-            }}
-          ></Stack.Screen>
-        </Stack.Navigator>
-      </NavigationContainer>
+              <Stack.Screen
+                name="ProductDetails"
+                component={ProductDetail}
+                options={{
+                  headerShown: false,
+                }}
+              ></Stack.Screen>
+              <Stack.Screen
+                name="ProductList"
+                component={NewRivals}
+                options={{
+                  headerShown: false,
+                }}
+              ></Stack.Screen>
+              <Stack.Screen
+                name="Login"
+                component={LoginScreen}
+                options={{
+                  headerShown: false,
+                }}
+              ></Stack.Screen>
+              <Stack.Screen
+                name="Signup"
+                component={Signup}
+                options={{
+                  headerShown: false,
+                }}
+              ></Stack.Screen>
+              <Stack.Screen
+                name="Welcome"
+                component={WelcomeScreen}
+                options={{
+                  headerShown: false,
+                }}
+              ></Stack.Screen>
+              <Stack.Screen
+                name="Setting"
+                component={Settings}
+                options={{
+                  headerShown: false,
+                }}
+              ></Stack.Screen>
+              <Stack.Screen
+                name="EditProfile"
+                component={EditProfile}
+                options={{
+                  headerShown: false,
+                  navigationBarHidden: false,
+                }}
+              ></Stack.Screen>
+              <Stack.Screen
+                name="Checkout"
+                component={Checkout}
+                options={{
+                  headerShown: false,
+                  navigationBarHidden: false,
+                }}
+              ></Stack.Screen>
+              <Stack.Screen
+                name="Order"
+                component={Order}
+                options={{
+                  headerShown: false,
+                  navigationBarHidden: false,
+                }}
+              ></Stack.Screen>
+            </Stack.Navigator>
+          </NavigationContainer>
+        </CartProvider>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }

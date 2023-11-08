@@ -14,20 +14,18 @@ import styles from "./search.style";
 import { COLORS, SIZES } from "../constants";
 import { useDebounce, useProductsSearch } from "../Components/Api";
 import { LoadingIndicator } from "../Components/Loading/LoadingIndicator";
-import { ErrorMessage } from "../Components/Loading/ErrorMessage";
 import SearchTitle from "../Components/Products/SearchTitle";
 
 const Search = () => {
   const [searchKey, setSearchKey] = useState("");
-  const debouncedValue = useDebounce(searchKey, 1000);
+  // const debouncedValue = useDebounce(searchKey, 1000);
 
-  const { data, error, isLoading } = useProductsSearch(debouncedValue);
+  const { mutate, isLoading, data } = useProductsSearch();
 
   if (isLoading) {
     <LoadingIndicator />;
   }
-  if (error) return <ErrorMessage message={error.message}></ErrorMessage>;
-  if (!data) {
+  if (!data?.length) {
     <View style={{ flex: 1, alignItems: "center" }}>
       <Image
         source={require("../assets/images/Pose23.png")}
@@ -54,7 +52,10 @@ const Search = () => {
           />
         </View>
         <View>
-          <TouchableOpacity style={styles.searchBtn}>
+          <TouchableOpacity
+            style={styles.searchBtn}
+            onPress={() => mutate(searchKey)}
+          >
             <Feather
               name="search"
               size={SIZES.xLarge}
@@ -63,7 +64,7 @@ const Search = () => {
           </TouchableOpacity>
         </View>
       </View>
-      {data.length === 0 ? (
+      {data?.length === 0 ? (
         <View style={{ flex: 1, alignItems: "center" }}>
           <Image
             source={require("../assets/images/Pose23.png")}

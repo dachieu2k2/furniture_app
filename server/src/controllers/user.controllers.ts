@@ -28,7 +28,7 @@ const login: Controller = async (req, res) => {
             { id: foundUser._id },
             process.env.SECRET_TOKEN || ''
         );
-        return res.status(200).json({ success: true, accessToken, message: "Login success!" });
+        return res.status(200).json({ success: true, accessToken, message: "Login success!", user: foundUser });
     } catch (error) {
         console.log(error);
         res.status(500).json({ success: false, message: "server error!" });
@@ -36,8 +36,8 @@ const login: Controller = async (req, res) => {
 }
 
 const createUser: Controller = async (req, res) => {
-    const { email, username, password } = req.body;
-    if (!email || !username || !password) {
+    const { email, password, address, phone } = req.body;
+    if (!email || !password) {
         return res.json({ success: false, message: "please fill in the fields!" });
     }
     try {
@@ -59,25 +59,26 @@ const createUser: Controller = async (req, res) => {
                 message: "Please choose another email",
             });
         }
-        if (!password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/)) {
-            return res.json({
-                success: false,
-                message:
-                    "Password should contains at least 8 from the mentioned characters, one upper case, one lower case, one digit",
-            });
-        }
+        // if (!password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/)) {
+        //     return res.json({
+        //         success: false,
+        //         message:
+        //             "Password should contains at least 8 from the mentioned characters, one upper case, one lower case, one digit",
+        //     });
+        // }
         const hashPassword = bcrypt.hashSync(password, 10);
         const newUser = new UserModel({
-            username,
             password: hashPassword,
             email,
+            address,
+            phone
         });
-        await newUser.save();
+        const userSave = await newUser.save();
         const accessToken = jwt.sign(
             { id: newUser._id },
             process.env.SECRET_TOKEN || ''
         );
-        return res.status(200).json({ success: true, accessToken, message: "Register success!" });
+        return res.status(200).json({ success: true, accessToken, message: "Register success!", user: userSave });
     } catch (error) {
         console.log(error);
         res.status(500).json({ success: false, message: "server error!" });

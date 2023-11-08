@@ -1,10 +1,12 @@
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { COLORS, FONTS } from "../constants";
 import { MaterialIcons } from "@expo/vector-icons";
+import { AuthContext } from "../Components/Contexts/AuthContext";
 
 const Settings = ({ navigation }) => {
+  const { clearAuth } = useContext(AuthContext);
   const navigateToEditProfile = () => {
     navigation.navigate("EditProfile");
   };
@@ -49,8 +51,9 @@ const Settings = ({ navigation }) => {
     console.log("Aadd account ");
   };
 
-  const logout = () => {
+  const logout = async () => {
     // console.log("Logout");
+    await clearAuth();
     navigation.navigate("Welcome");
   };
 

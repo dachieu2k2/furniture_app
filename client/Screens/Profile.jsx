@@ -6,13 +6,14 @@ import {
   useWindowDimensions,
   FlatList,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { COLORS, FONTS, SIZES, images } from "../constants";
 import { StatusBar } from "expo-status-bar";
 import { MaterialIcons } from "@expo/vector-icons";
 import { SceneMap, TabBar, TabView } from "react-native-tab-view";
 import { photos } from "../constants/data";
+import { AuthContext } from "../Components/Contexts/AuthContext";
 
 const PhotosRoutes = () => (
   <View style={{ flex: 1 }}>
@@ -42,9 +43,28 @@ const LikesRoutes = () => (
   <View
     style={{
       flex: 1,
-      backgroundColor: "blue",
     }}
-  />
+  >
+    <FlatList
+      data={photos}
+      numColumns={3}
+      renderItem={({ item, index }) => (
+        <View
+          style={{
+            flex: 1,
+            aspectRatio: 1,
+            margin: 3,
+          }}
+        >
+          <Image
+            key={index}
+            source={item}
+            style={{ width: "100%", height: "100%", borderRadius: 12 }}
+          />
+        </View>
+      )}
+    />
+  </View>
 );
 
 const renderScene = SceneMap({
@@ -55,6 +75,8 @@ const renderScene = SceneMap({
 const Profile = ({ navigation }) => {
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
+
+  const { profile } = useContext(AuthContext);
 
   const [routes] = useState([
     { key: "first", title: "Photos" },
@@ -99,7 +121,7 @@ const Profile = ({ navigation }) => {
 
       <View style={{ flex: 1, alignItems: "center" }}>
         <Image
-          source={images.profile}
+          source={{ uri: profile.avatar ? profile.avatar : images.profile }}
           resizeMode="contain"
           style={{
             height: 155,
@@ -118,7 +140,7 @@ const Profile = ({ navigation }) => {
             marginVertical: 8,
           }}
         >
-          Melissa Peters
+          {profile ? profile.email : "Melissa Peters"}
         </Text>
         <Text
           style={{
@@ -126,7 +148,7 @@ const Profile = ({ navigation }) => {
             ...FONTS.body4,
           }}
         >
-          Interior designer
+          {profile ? profile.phone : "Interior designer"}
         </Text>
 
         <View
@@ -143,11 +165,11 @@ const Profile = ({ navigation }) => {
               marginLeft: 4,
             }}
           >
-            Lagos, Nigeria
+            {profile ? profile.address : "Lagos, Nigeria"}
           </Text>
         </View>
 
-        <View
+        {/* <View
           style={{
             paddingVertical: 8,
             flexDirection: "row",
@@ -227,7 +249,7 @@ const Profile = ({ navigation }) => {
               Likes
             </Text>
           </View>
-        </View>
+        </View> */}
 
         <View style={{ flexDirection: "row" }}>
           <TouchableOpacity
@@ -240,7 +262,7 @@ const Profile = ({ navigation }) => {
               borderRadius: 10,
               marginHorizontal: SIZES.padding * 2,
             }}
-            onPress={() => navigation.navigate("EditProfile")}
+            onPress={() => navigation.navigate("Order")}
           >
             <Text
               style={{
@@ -248,7 +270,7 @@ const Profile = ({ navigation }) => {
                 color: COLORS.white,
               }}
             >
-              Edit Profile
+              My Orders
             </Text>
           </TouchableOpacity>
 
@@ -262,6 +284,7 @@ const Profile = ({ navigation }) => {
               borderRadius: 10,
               marginHorizontal: SIZES.padding * 2,
             }}
+            onPress={() => navigation.navigate("Cart")}
           >
             <Text
               style={{
@@ -269,13 +292,13 @@ const Profile = ({ navigation }) => {
                 color: COLORS.white,
               }}
             >
-              Add Friend
+              My Cart
             </Text>
           </TouchableOpacity>
         </View>
       </View>
 
-      <View style={{ flex: 1, marginHorizontal: 22, marginTop: 20 }}>
+      <View style={{ flex: 1, marginHorizontal: 22, marginTop: -80 }}>
         <TabView
           navigationState={{ index, routes }}
           renderScene={renderScene}

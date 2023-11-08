@@ -13,6 +13,6 @@ const ProductSchema = new Schema(
     timestamps: true
 }
 )
-const ProductModel = model('Product', ProductSchema)
+const ProductModel = model('Products', ProductSchema)
 
 export default ProductModel

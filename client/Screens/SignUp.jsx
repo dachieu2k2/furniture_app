@@ -6,16 +6,58 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { COLORS } from "../constants";
 import { Ionicons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox";
 import Button from "../Components/Button";
+import { useCreateUser } from "../Components/Api";
+import { LoadingIndicator } from "../Components/Loading/LoadingIndicator";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AuthContext } from "../Components/Contexts/AuthContext";
 
 const Signup = ({ navigation }) => {
   const [isPasswordShown, setIsPasswordShown] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const [email, setEmail] = useState("d@s.com");
+  const [phone, setPhone] = useState("123123");
+  const [address, setAddress] = useState("e");
+  const [password, setPassword] = useState("asd");
+
+  const { saveData } = useContext(AuthContext);
+
+  const { mutate, isLoading } = useCreateUser();
+
+  const signUp = () => {
+    console.log("signUp");
+    if (email && phone && address && password) {
+      mutate(
+        { email, phone, address, password },
+        {
+          onSuccess: async (data) => {
+            await saveData(data.user);
+            console.log("signUp success");
+
+            setEmail("");
+            setPhone("");
+            setPassword("");
+            setAddress("");
+            alert("Success!!!");
+            navigation.navigate("Home");
+          },
+        }
+      );
+    } else {
+      console.log(email, password, phone, address);
+      alert("Fill all fields!!!");
+    }
+  };
+
+  if (isLoading) {
+    return <LoadingIndicator />;
+  }
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
       <View style={{ flex: 1, marginHorizontal: 22 }}>
@@ -37,7 +79,7 @@ const Signup = ({ navigation }) => {
               color: COLORS.black,
             }}
           >
-            Connect with your friend today!
+            Buy furniture for your home!
           </Text>
         </View>
 
@@ -71,6 +113,8 @@ const Signup = ({ navigation }) => {
               style={{
                 width: "100%",
               }}
+              value={email}
+              onChangeText={(text) => setEmail(text)}
             />
           </View>
         </View>
@@ -100,7 +144,7 @@ const Signup = ({ navigation }) => {
             }}
           >
             <TextInput
-              placeholder="+91"
+              placeholder="+84"
               placeholderTextColor={COLORS.black}
               keyboardType="numeric"
               style={{
@@ -118,6 +162,43 @@ const Signup = ({ navigation }) => {
               style={{
                 width: "80%",
               }}
+              value={phone}
+              onChangeText={(text) => setPhone(text)}
+            />
+          </View>
+        </View>
+        <View style={{ marginBottom: 12 }}>
+          <Text
+            style={{
+              fontSize: 16,
+              fontWeight: 400,
+              marginVertical: 8,
+            }}
+          >
+            Address
+          </Text>
+
+          <View
+            style={{
+              width: "100%",
+              height: 48,
+              borderColor: COLORS.black,
+              borderWidth: 1,
+              borderRadius: 8,
+              alignItems: "center",
+              justifyContent: "center",
+              paddingLeft: 22,
+            }}
+          >
+            <TextInput
+              placeholder="Enter your address"
+              placeholderTextColor={COLORS.black}
+              keyboardType="default"
+              style={{
+                width: "100%",
+              }}
+              value={address}
+              onChangeText={(text) => setAddress(text)}
             />
           </View>
         </View>
@@ -152,6 +233,8 @@ const Signup = ({ navigation }) => {
               style={{
                 width: "100%",
               }}
+              value={password}
+              onChangeText={(text) => setPassword(text)}
             />
 
             <TouchableOpacity
@@ -193,6 +276,7 @@ const Signup = ({ navigation }) => {
             marginTop: 18,
             marginBottom: 4,
           }}
+          onPress={() => signUp()}
         />
 
         <View
@@ -306,6 +390,7 @@ const Signup = ({ navigation }) => {
           </Pressable>
         </View>
       </View>
+      <View style={{ height: 200 }} />
     </SafeAreaView>
   );
 };

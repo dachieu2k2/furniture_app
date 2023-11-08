@@ -6,17 +6,54 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { COLORS } from "../constants";
 
 import { Ionicons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox";
 import Button from "../Components/Button";
+import { LoadingIndicator } from "../Components/Loading/LoadingIndicator";
+import { useLogin } from "../Components/Api";
+import { AuthContext } from "../Components/Contexts/AuthContext";
 
 const LoginScreen = ({ navigation }) => {
   const [isPasswordShown, setIsPasswordShown] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const { saveData } = useContext(AuthContext);
+
+  const { mutate, isLoading } = useLogin();
+
+  const signIn = () => {
+    console.log("SignIn");
+    if (email && password) {
+      mutate(
+        { email, password },
+        {
+          onSuccess: async (data) => {
+            console.log(data);
+            await saveData(data.user);
+            console.log("signIn success");
+
+            setEmail("");
+            setPassword("");
+            alert("Success!!!");
+            navigation.navigate("Home");
+          },
+        }
+      );
+    } else {
+      alert("Fill all fields!!!");
+    }
+  };
+
+  if (isLoading) {
+    return <LoadingIndicator />;
+  }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
@@ -73,6 +110,8 @@ const LoginScreen = ({ navigation }) => {
               style={{
                 width: "100%",
               }}
+              value={email}
+              onChangeText={(text) => setEmail(text)}
             />
           </View>
         </View>
@@ -107,6 +146,8 @@ const LoginScreen = ({ navigation }) => {
               style={{
                 width: "100%",
               }}
+              value={password}
+              onChangeText={(text) => setPassword(text)}
             />
 
             <TouchableOpacity
@@ -148,6 +189,7 @@ const LoginScreen = ({ navigation }) => {
             marginTop: 18,
             marginBottom: 4,
           }}
+          onPress={() => signIn()}
         />
 
         <View

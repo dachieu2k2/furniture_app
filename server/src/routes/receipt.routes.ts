@@ -7,6 +7,6 @@ const receiptRouter = Router()
 receiptRouter.get('/', receiptController.getAllReceipt)
 receiptRouter.get('/:id', receiptController.getReceipt)
 receiptRouter.get('/search/:key', receiptController.searchReceipt)
-receiptRouter.post('/', verifyToken, receiptController.createReceipt)
+receiptRouter.post('/', receiptController.createReceipt)
 
 export default receiptRouter

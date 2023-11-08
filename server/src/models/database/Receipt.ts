@@ -5,15 +5,15 @@ import UserModel from "./User";
 const ReceiptSchema = new Schema(
     {
         products: {
-            type: [ProductModel.schema],
-            ref: "Product"
+            type: [{ item: Schema.Types.ObjectId, count: Number }],
+            ref: "Products"
         },
         price: {
             type: String,
             require: true,
         },
         user: {
-            type: UserModel.schema,
+            type: Schema.Types.ObjectId,
             ref: 'Users'
         },
         address: {

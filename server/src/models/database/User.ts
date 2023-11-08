@@ -2,13 +2,18 @@ import { Schema, model } from "mongoose";
 
 const UserSchema = new Schema(
     {
-        username: {
-            type: String,
-            unique: true,
-        },
+        // username: {
+        //     type: String,
+        //     unique: true,
+        //     default: "User #" + (Math.random() * 1000).toFixed(0)
+        // },
         email: {
             type: String,
             required: true,
+            unique: true,
+        },
+        phone: {
+            type: String,
             unique: true,
         },
         avatar: {

@@ -26,7 +26,13 @@ const getAllReceipt: Controller = async (req, res) => {
 
 const getReceipt: Controller = async (req, res) => {
     try {
-        const Receipt = await ReceiptModel.findById(req.params.id)
+        const Receipt = await ReceiptModel.find({ user: req.params.id }).populate({
+            path: 'products.item',
+            select:
+                'title supplier price imageUrl description product_location',
+        })
+        console.log('run here?');
+
         res.status(200).json(Receipt)
     } catch (error) {
         console.log(error);

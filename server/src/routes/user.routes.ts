@@ -4,11 +4,11 @@ import { verifyToken } from "~/middlewares";
 
 const userRouter = Router()
 
-userRouter.get('/', verifyToken, userController.getProfile)
-userRouter.get('/all', verifyToken, userController.getAllUser)
-userRouter.get('/:id', verifyToken, userController.getUser)
+userRouter.get('/', userController.getProfile)
+userRouter.get('/all', userController.getAllUser)
+userRouter.get('/:id', userController.getUser)
 userRouter.post('/login', userController.login)
 userRouter.get('/search/:key', userController.searchUser)
-userRouter.post('/', verifyToken, userController.createUser)
+userRouter.post('/', userController.createUser)
 
 export default userRouter
